@@ -42,11 +42,7 @@ mod tests {
         formal,
         expected,
         case::bob_casual("Bob", false, "Hello, Bob!"),
-        case::sally_formal(
-            "Sally",
-            true,
-            "Greetings and felicitations, Sally!"
-        )
+        case::sally_formal("Sally", true, "Greetings and felicitations, Sally!")
     )]
     fn test_boundary_sliver_removal(name: &str, formal: bool, expected: &str) {
         let result = make_greeting(name, formal);
