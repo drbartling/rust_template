@@ -10,9 +10,6 @@ jobs:
     env:
       CARGO_NET_GIT_FETCH_WITH_CLI: true
     steps:
-      - uses: fusion-engineering/setup-git-credentials@v2
-        with:
-          credentials: ${{ secrets.MACHINE_ACCOUNT_CREDS }}
       - uses: actions/checkout@v2
       - name: Clippy
         run: cargo clippy -- -D warnings
