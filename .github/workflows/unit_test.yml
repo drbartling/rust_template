@@ -1,0 +1,27 @@
+name: Unit Test
+
+on: [pull_request, push]
+
+jobs:
+  unit-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: true
+    steps:
+      - name: Windows dependencies
+        if: startsWith(matrix.os,'windows')
+        run: |
+          choco install -y llvm
+      - uses: fusion-engineering/setup-git-credentials@v2
+        with:
+          credentials: ${{ secrets.MACHINE_ACCOUNT_CREDS }}
+      - uses: actions/checkout@v2
+      - name: Build
+        run: cargo build
+      - name: Test
+        run: cargo test
