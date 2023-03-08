@@ -1,32 +1,32 @@
-use structopt::StructOpt;
+use clap::Parser;
+use klask::Settings;
 
-/// Greet a person or entity by name
-///
-/// NAME is the name of the persom or entity you wish to greet. If not provided
-/// we'll greet the whole world!
-#[derive(Debug, StructOpt)]
-struct Opts {
-    /// Name of the person or entity to greet
-    #[structopt(default_value = "World")]
+/// Simple program to greet a person
+#[derive(Parser, Debug)]
+#[clap(author, version, about, long_about = None)]
+struct Args {
+    /// Name of the person to greet
+    #[clap(short, long, value_parser)]
     name: String,
 
-    /// Increase the formality of the greeting
-    #[structopt(short, long)]
-    formal: bool,
+    /// Number of times to greet
+    #[clap(short, long, value_parser, default_value_t = 1)]
+    count: u8,
 }
-
 fn main() {
-    let opts = Opts::from_args();
-
-    println!("{}", make_greeting(&opts.name, opts.formal));
+    let args: Vec<String> = std::env::args().collect();
+    if args.len() <= 1 {
+        klask::run_derived::<Args, _>(Settings::default(), |o| println!("{:#?}", o));
+    } else {
+        let args = Args::parse();
+        for _ in 0..args.count {
+            println!("{}", make_greeting(&args.name));
+        }
+    }
 }
 
-fn make_greeting(name: &str, formal: bool) -> String {
-    if formal {
-        format!("Greetings and felicitations, {}!", name)
-    } else {
-        format!("Hello, {}!", name)
-    }
+fn make_greeting(name: &str) -> String {
+    format!("Hello, {}!", name)
 }
 
 #[cfg(test)]
@@ -37,15 +37,11 @@ mod tests {
     use super::*;
     use pretty_assertions::assert_eq;
 
-    #[rstest(
-        name,
-        formal,
-        expected,
-        case::bob_casual("Bob", false, "Hello, Bob!"),
-        case::sally_formal("Sally", true, "Greetings and felicitations, Sally!")
-    )]
-    fn test_boundary_sliver_removal(name: &str, formal: bool, expected: &str) {
-        let result = make_greeting(name, formal);
+    #[rstest]
+    #[case("Bob", "Hello, Bob!")]
+    #[case("Sally", "Hello, Sally!")]
+    fn test_make_greeting(#[case] name: &str, #[case] expected: &str) {
+        let result = make_greeting(name);
         assert_eq!(expected, &result);
     }
 }
