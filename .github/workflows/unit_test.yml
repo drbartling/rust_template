@@ -13,12 +13,12 @@ jobs:
     env:
       CARGO_NET_GIT_FETCH_WITH_CLI: true
     steps:
-      - name: Windows dependencies
-        if: startsWith(matrix.os,'windows')
-        run: |
-          choco install -y llvm
-      - uses: actions/checkout@v2
-      - name: Build
-        run: cargo build
-      - name: Test
-        run: cargo test
+    - name: Windows dependencies
+      if: startsWith(matrix.os,'windows')
+      run: |
+        choco install -y llvm
+    - uses: actions/checkout@v2
+    - name: Build
+      run: cargo build
+    - name: Test
+      run: cargo test

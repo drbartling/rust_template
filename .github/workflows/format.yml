@@ -13,19 +13,19 @@ jobs:
       matrix:
         os: [ubuntu-latest]
     steps:
-      - uses: actions/checkout@v2
-      - name: Format Check
-        run: cargo fmt -- --check
+    - uses: actions/checkout@v2
+    - name: Format Check
+      run: cargo fmt -- --check
 
       # Check White Space against PR Base
-      - name: Whitespace check PR
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          echo origin/$GITHUB_BASE_REF
-          echo origin/$GITHUB_HEAD_REF
-          git diff origin/$GITHUB_BASE_REF origin/$GITHUB_HEAD_REF --check
+    - name: Whitespace check PR
+      if: ${{ github.event_name == 'pull_request' }}
+      run: |
+        echo origin/$GITHUB_BASE_REF
+        echo origin/$GITHUB_HEAD_REF
+        git diff origin/$GITHUB_BASE_REF origin/$GITHUB_HEAD_REF --check
 
       # Check White Space against previous commit
-      - name: Whitespace check PUSH
-        if: ${{ github.event_name == 'Push' }}
-        run: git diff HEAD~1 --check
+    - name: Whitespace check PUSH
+      if: ${{ github.event_name == 'Push' }}
+      run: git diff HEAD~1 --check
