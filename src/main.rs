@@ -1,6 +1,13 @@
 use clap::Parser;
 use klask::Settings;
 
+const BUILD_VERSION: &str = git_version::git_version!(
+    args = ["--always", "--tags", "--long", "--dirty"],
+    prefix = "Hello-build: ",
+    suffix = "",
+    fallback = "unknown",
+);
+
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
@@ -14,6 +21,8 @@ struct Args {
     count: u8,
 }
 fn main() {
+    init_logs();
+    log::info!("{BUILD_VERSION}");
     let args: Vec<String> = std::env::args().collect();
     if args.len() <= 1 {
         klask::run_derived::<Args, _>(Settings::default(), app_main);
@@ -21,6 +30,13 @@ fn main() {
         let args = Args::parse();
         app_main(args);
     }
+}
+
+fn init_logs() {
+    let mut builder = env_logger::Builder::new();
+    builder.filter_level(log::LevelFilter::Info);
+    builder.parse_default_env();
+    builder.init();
 }
 
 fn app_main(args: Args) {
