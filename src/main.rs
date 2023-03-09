@@ -16,12 +16,16 @@ struct Args {
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     if args.len() <= 1 {
-        klask::run_derived::<Args, _>(Settings::default(), |o| println!("{:#?}", o));
+        klask::run_derived::<Args, _>(Settings::default(), app_main);
     } else {
         let args = Args::parse();
-        for _ in 0..args.count {
-            println!("{}", make_greeting(&args.name));
-        }
+        app_main(args);
+    }
+}
+
+fn app_main(args: Args) {
+    for _ in 0..args.count {
+        println!("{}", make_greeting(&args.name));
     }
 }
 
