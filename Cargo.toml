@@ -12,6 +12,8 @@ rstest = "0.16.0"
 
 [package]
 authors = ["Ryan Bartling <ryan.bartling@gmail.com>"]
+description = "Hello world rust template"
 edition = "2021"
+license = "MIT"
 name = "rust"
 version = "0.1.0"

@@ -35,10 +35,16 @@ cargo build --release
 
 ### Building the Windows Installer
 
+Cargo wix does a good job of generating a good installer out of the box, so this template will not provide a `.wxs` file.  Feel free to look at the [python template](https://github.com/drbartling/python_template) for an example of another wxs file.
+
 - Install build dependencies
 	- Windows: `choco install wixtoolset`
+- Define the installer
+	- `cargo wix init`
 - Build the installer
 	- `cargo wix`
+- Commit the new installer definition
+	- `git commit -a`
 
 ## Using the Template
 
