@@ -15,5 +15,5 @@ authors = ["Ryan Bartling <ryan.bartling@gmail.com>"]
 description = "Hello world rust template"
 edition = "2021"
 license = "MIT"
-name = "rust"
+name = "hello-rust"
 version = "0.1.0"
